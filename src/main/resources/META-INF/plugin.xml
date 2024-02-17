@@ -1,0 +1,25 @@
+<idea-plugin>
+    <id>me.RomanAndr.googlefonts</id>
+    <name>Google Fonts</name>
+    <vendor>RomanAndr</vendor>
+
+    <description><![CDATA[
+     Import fonts from the fonts.google.com to your html and css files. (Hotkey: Alt+Shift+F)
+  ]]></description>
+
+    <change-notes><![CDATA[
+      1.0 - First version
+      ]]>
+    </change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+    <actions>
+        <action id="FontAction" class="FontAction" text="FontAction" description="Inserts font import">
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift F"/>
+        </action>
+    </actions>
+</idea-plugin>
