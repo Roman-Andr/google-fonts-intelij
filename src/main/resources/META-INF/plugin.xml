@@ -15,11 +15,19 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-
+        <notificationGroup id="Font Downloader" displayType="BALLOON"/>
     </extensions>
     <actions>
-        <action id="FontAction" class="FontAction" text="FontAction" description="Inserts font import">
+        <action id="me.romanandr.googlefonts.action.insert.FontAction"
+                class="me.romanandr.googlefonts.action.insert.FontAction"
+                text="me.romanandr.googlefonts.action.insert.FontAction" description="Inserts font import">
             <keyboard-shortcut keymap="$default" first-keystroke="alt shift F"/>
+        </action>
+        <action id="me.romanandr.googlefonts.action.download.DownloadFontAction"
+                class="me.romanandr.googlefonts.action.download.DownloadFontAction"
+                text="me.romanandr.googlefonts.action.download.DownloadFontAction"
+                description="Downloads font to project">
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift D"/>
         </action>
     </actions>
 </idea-plugin>

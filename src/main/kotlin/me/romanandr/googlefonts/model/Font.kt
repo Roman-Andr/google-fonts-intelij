@@ -1,9 +1,4 @@
-package me.romanandr.googlefonts
-
-data class FontsInfo(
-    val kind: String,
-    val items: List<Font>
-)
+package me.romanandr.googlefonts.model
 
 data class Font(
     val family: String,

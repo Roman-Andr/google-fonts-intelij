@@ -1,4 +1,4 @@
-package me.romanandr.googlefonts
+package me.romanandr.googlefonts.action.insert
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -7,9 +7,10 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.vfs.ReadonlyStatusHandler
-import me.romanandr.googlefonts.utils.GoogleApi.generateUrl
+import me.romanandr.googlefonts.api.FontService.generateUrl
+import me.romanandr.googlefonts.model.Font
 
-class InsertFontAction(val font: Font) : AnAction(font.family) {
+class InsertAction(val font: Font) : AnAction(font.family) {
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.getData(PlatformDataKeys.PROJECT)
         val editor = event.getData(PlatformDataKeys.EDITOR)
