@@ -4,7 +4,8 @@
     <vendor>RomanAndr</vendor>
 
     <description><![CDATA[
-     Import fonts from the fonts.google.com to your html and css files. (Hotkey: Alt+Shift+F)
+     Import fonts from the fonts.google.com to your html and css files (Alt+Shift+F)
+     Download fonts (Alf+Shift+D)
   ]]></description>
 
     <change-notes><![CDATA[
@@ -21,9 +22,10 @@
         <notificationGroup id="Font Downloader" displayType="BALLOON"/>
     </extensions>
     <actions>
-        <action id="me.romanandr.googlefonts.action.insert.FontAction"
-                class="me.romanandr.googlefonts.action.insert.FontAction"
-                text="me.romanandr.googlefonts.action.insert.FontAction" description="Inserts font import">
+        <action id="me.romanandr.googlefonts.action.insert.InsertFontAction"
+                class="me.romanandr.googlefonts.action.insert.InsertFontAction"
+                text="me.romanandr.googlefonts.action.insert.InsertFontAction"
+                description="Inserts font import">
             <keyboard-shortcut keymap="$default" first-keystroke="alt shift F"/>
         </action>
         <action id="me.romanandr.googlefonts.action.download.DownloadFontAction"

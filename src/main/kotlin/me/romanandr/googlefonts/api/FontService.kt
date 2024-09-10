@@ -20,7 +20,8 @@ object FontService {
 
     fun fetchFonts(): FontsInfo {
         val client = HttpClient.newBuilder().build()
-        val request = HttpRequest.newBuilder()
+        val request = HttpRequest
+            .newBuilder()
             .uri(URI.create("https://www.googleapis.com/webfonts/v1/webfonts?sort=trending&key=${System.getenv("api_key")}"))
             .build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())

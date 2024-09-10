@@ -7,17 +7,15 @@ import com.intellij.openapi.ui.popup.JBPopupFactory
 import me.romanandr.googlefonts.api.FontService
 
 
-class FontAction : AnAction() {
+class InsertFontAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val data = FontService.fetchFonts()
-        val project = event.getData(PlatformDataKeys.PROJECT)
+        val project = event.getData(PlatformDataKeys.PROJECT) ?: return
 
-        if (project != null) {
-            JBPopupFactory.getInstance().createActionGroupPopup(
-                "Google Fonts",
-                InsertActionGroup(data.items), event.dataContext,
-                JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true
-            ).showCenteredInCurrentWindow(project)
-        }
+        JBPopupFactory.getInstance().createActionGroupPopup(
+            "Google Fonts",
+            InsertActionGroup(data.items), event.dataContext,
+            JBPopupFactory.ActionSelectionAid.SPEEDSEARCH, true
+        ).showCenteredInCurrentWindow(project)
     }
 }

@@ -12,23 +12,22 @@ import me.romanandr.googlefonts.model.Font
 
 class InsertAction(val font: Font) : AnAction(font.family) {
     override fun actionPerformed(event: AnActionEvent) {
-        val project = event.getData(PlatformDataKeys.PROJECT)
-        val editor = event.getData(PlatformDataKeys.EDITOR)
-        if (editor != null && project != null) {
-            val currentDocument: Document = editor.document
+        val project = event.getData(PlatformDataKeys.PROJECT) ?: return
+        val editor = event.getData(PlatformDataKeys.EDITOR) ?: return
 
-            if (ReadonlyStatusHandler.ensureDocumentWritable(project, currentDocument)) {
-                CommandProcessor.getInstance().runUndoTransparentAction {
-                    ApplicationManager.getApplication().runWriteAction {
-                        var target = generateUrl(font)
-                        if (listOf("css", "scss", "sass", "less", "pcss").contains(editor.virtualFile.extension)) {
-                            target = "@import url('${target}');"
-                        } else {
-                            target = "<link href=\"${target}\" rel=\"stylesheet\" />"
-                        }
-                        currentDocument.insertString(editor.caretModel.offset, target)
-                        editor.caretModel.moveToOffset(editor.caretModel.offset + target.length)
+        val currentDocument: Document = editor.document
+
+        if (ReadonlyStatusHandler.ensureDocumentWritable(project, currentDocument)) {
+            CommandProcessor.getInstance().runUndoTransparentAction {
+                ApplicationManager.getApplication().runWriteAction {
+                    var target = generateUrl(font)
+                    target = if (listOf("css", "scss", "sass", "less", "pcss").contains(editor.virtualFile.extension)) {
+                        "@import url('${target}');"
+                    } else {
+                        "<link href=\"${target}\" rel=\"stylesheet\" />"
                     }
+                    currentDocument.insertString(editor.caretModel.offset, target)
+                    editor.caretModel.moveToOffset(editor.caretModel.offset + target.length)
                 }
             }
         }
