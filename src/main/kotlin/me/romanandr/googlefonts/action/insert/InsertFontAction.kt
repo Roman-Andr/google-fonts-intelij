@@ -10,8 +10,9 @@ import me.romanandr.googlefonts.api.FontService
 class InsertFontAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val data = FontService.fetchFonts()
-        val project = event.getData(PlatformDataKeys.PROJECT) ?: return
+        if (data.items == null) return
 
+        val project = event.getData(PlatformDataKeys.PROJECT) ?: return
         JBPopupFactory.getInstance().createActionGroupPopup(
             "Google Fonts",
             InsertActionGroup(data.items), event.dataContext,

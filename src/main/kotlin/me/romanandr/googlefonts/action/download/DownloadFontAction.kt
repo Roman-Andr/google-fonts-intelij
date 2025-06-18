@@ -9,6 +9,7 @@ import me.romanandr.googlefonts.api.FontService
 class DownloadFontAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val data = FontService.fetchFonts()
+        if (data.items == null) return
         val project = event.getData(PlatformDataKeys.PROJECT) ?: return
 
         JBPopupFactory.getInstance().createActionGroupPopup(
