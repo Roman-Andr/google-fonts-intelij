@@ -21,7 +21,7 @@ class DownloadAction(val fonts: List<Font>) : AnAction() {
         val editor = event.getData(PlatformDataKeys.EDITOR) ?: return
 
         val currentFile = editor.virtualFile.parent
-        val fontsDirectory = File(currentFile.path, "Fonts")
+        val fontsDirectory = File(currentFile.path, "fonts")
         if (!fontsDirectory.exists()) {
             fontsDirectory.mkdir()
         }
