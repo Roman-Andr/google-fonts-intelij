@@ -1,28 +1,25 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.16.1"
+    id("org.jetbrains.intellij") version "1.17.4"
     kotlin("jvm")
 }
 
 group = "me.RomanAndr"
-version = "1.3.1"
+version = "1.4.0"
 
 repositories {
     mavenCentral()
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     version.set("2023.1.5")
-    type.set("IC") // Target IDE Platform
+    type.set("IC")
     updateSinceUntilBuild.set(false)
 
     plugins.set(listOf(/* Plugin Dependencies */))
 }
 
 tasks {
-    // Set the JVM compatibility versions
     withType<JavaCompile> {
     }
 
@@ -42,6 +39,7 @@ tasks {
 }
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("com.github.ben-manes.caffeine:caffeine:3.2.1")
 }
 kotlin {
     jvmToolchain(17)

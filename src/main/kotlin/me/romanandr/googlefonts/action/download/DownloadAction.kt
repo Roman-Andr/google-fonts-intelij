@@ -13,43 +13,54 @@ import me.romanandr.googlefonts.model.Font
 import me.romanandr.googlefonts.utils.FileDownloader
 import java.io.File
 
-class DownloadAction(val font: Font) : AnAction(font.family) {
+class DownloadAction(val fonts: List<Font>) : AnAction() {
+    constructor(font: Font) : this(listOf(font))
+
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.getData(PlatformDataKeys.PROJECT) ?: return
         val editor = event.getData(PlatformDataKeys.EDITOR) ?: return
 
         val currentFile = editor.virtualFile.parent
-        val targetDirectory = currentFile.path
-        val fontDirectory = "$targetDirectory/${font.family}"
-
-        val directory = File(fontDirectory)
-        if (!directory.exists()) {
-            directory.mkdir()
+        val fontsDirectory = File(currentFile.path, "Fonts")
+        if (!fontsDirectory.exists()) {
+            fontsDirectory.mkdir()
         }
+        val targetDirectory = fontsDirectory.path
 
         ProgressManager.getInstance().run(object : Task.Backgroundable(project, "Downloading fonts", false) {
             override fun run(indicator: ProgressIndicator) {
                 indicator.isIndeterminate = false
                 indicator.text = "Downloading fonts..."
 
-                var successCount = 0
-                var failureCount = 0
+                var totalSuccessCount = 0
+                var totalFailureCount = 0
+                val totalFiles = fonts.sumOf { it.files.size }
+                var processedFiles = 0
 
-                for ((variant, url) in font.files) {
-                    val fileName = "${font.family}-${variant}.ttf"
-                    val destination = "$fontDirectory/$fileName"
-                    indicator.text2 = "Downloading $fileName"
-
-                    if (FileDownloader.downloadFile(url, destination)) {
-                        successCount++
-                    } else {
-                        failureCount++
+                for (font in fonts) {
+                    val fontDirectory = "$targetDirectory"
+                    val directory = File(fontDirectory)
+                    if (!directory.exists()) {
+                        directory.mkdir()
                     }
 
-                    indicator.fraction = (successCount + failureCount).toDouble() / font.files.size
+                    for ((variant, url) in font.files) {
+                        val fileName = "${font.family}-${variant}.ttf"
+                        val destination = "$fontDirectory/$fileName"
+                        indicator.text2 = "Downloading $fileName"
+
+                        if (FileDownloader.downloadFile(url, destination)) {
+                            totalSuccessCount++
+                        } else {
+                            totalFailureCount++
+                        }
+
+                        processedFiles++
+                        indicator.fraction = processedFiles.toDouble() / totalFiles
+                    }
                 }
 
-                if (failureCount == 0) {
+                if (totalFailureCount == 0) {
                     NotificationGroupManager.getInstance()
                         .getNotificationGroup("Font Downloader")
                         .createNotification("All fonts downloaded successfully.", NotificationType.INFORMATION)
@@ -58,7 +69,7 @@ class DownloadAction(val font: Font) : AnAction(font.family) {
                 } else {
                     NotificationGroupManager.getInstance()
                         .getNotificationGroup("Font Downloader")
-                        .createNotification("Failed to download $failureCount fonts.", NotificationType.ERROR)
+                        .createNotification("Failed to download $totalFailureCount fonts.", NotificationType.ERROR)
                         .notify(project)
                 }
             }
